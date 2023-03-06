@@ -23,6 +23,7 @@ function Home() {
   useEffect(() => {
     getData();
   }, []);
+  
   return (
     <Layout>
       <h1>Home</h1>

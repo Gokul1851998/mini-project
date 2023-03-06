@@ -110,4 +110,7 @@ router.post('/update-profile',authMiddleWare,async(req,res)=>{
       })
   }
 })
+
+
+
 module.exports = router;

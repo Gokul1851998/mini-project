@@ -19,7 +19,7 @@ if (image) {
   imageUrl = user.image;
 }
 
-    const cloudAPI = 'dcfbzgrgb'
+    const cloudAPI = 'dutvub1ra'
     const uploadProfile =async () => {
         const formData = new FormData();
         formData.append('file', image);
@@ -41,6 +41,9 @@ if (image) {
                 }
         })
     }
+
+
+
     return (
         <Layout>
             <>
@@ -77,6 +80,7 @@ if (image) {
                             </div>
                         </div>
                     </div>
+                  
                 </div>
             </>
         </Layout>

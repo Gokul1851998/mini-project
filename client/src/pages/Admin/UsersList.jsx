@@ -1,4 +1,4 @@
-import { Table } from "antd";
+import {Table} from 'react-bootstrap'
 import axios from "axios";
 import moment from "moment/moment";
 import React, { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { hideLoading, showLoading } from "../../redux/alertReducer";
 
 function UsersList() {
   const [users, setUsers] = useState([]);
+  const [search,setSearch]=useState("")
   const dispatch = useDispatch();
   const getUsersData = async () => {
     try {
@@ -57,36 +58,68 @@ function UsersList() {
     getUsersData();
   }, []);
 
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-    },
-    {
-      title: "Email",
-      dataIndex: "email",
-    },
-    {
-      title: "Join date",
-      dataIndex: "createdAt",
-      render: (record, text) => moment(record.createdAt).format("DD-MM-YY"),
-    },
-    {
-      title: "Actions",
-      dataIndex: "actions",
-      render: (text, record) => (
-        <div className="d-flex">
-          {record.isActive && <a className="anchor" onClick={()=>changeUserStatus(record, '1')}>Block</a>}
-          {!record.isActive  && <a className="anchor" onClick={()=>changeUserStatus(record, 'h')} >Unblock</a>}
-        </div>
-      ),
-    },
-  ];
+  const searchData = (data) => {
+    return search === ""
+      ? data
+      : data.name.includes(search)
+  }
+
+ 
   return (
+   
     <Layout>
-      <h1 className="user-header">Userslist</h1>
-      <Table columns={columns} dataSource={users} />
+       <div style={{marginLeft:'10px', marginRight:'10px'}}>
+       <header className="px-5 py-4 border-b border-slate-100">
+               <h2 className="font-semibold text-slate-800">Users List</h2>
+           </header>
+           <form className="border-b border-slate-200" >
+               <div className="relative">
+                  <input
+                       onChange={(e) => {
+                           let searchValue = e.target.value.toLocaleLowerCase();
+                           setSearch(searchValue)
+                       }}
+                       className="d-flex" type="search" placeholder="Search " 
+       
+                        />
+               </div>
+           </form>
+        
+
+
+    <Table striped bordered hover >
+      <thead>
+        <tr>
+          
+          <th>Name</th>
+          <th>Email</th>
+          <th>Created At</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.filter(searchData).map((user)=>(
+          <tr key={user._id}>
+          <td>{user.name}</td>
+          <td>{user.email}</td>
+          <td>{user.createdAt}</td>
+          <td>
+            <div className='d-flex'>
+              {user.isActive ? (
+                <button className='userblock' onClick={()=>changeUserStatus(user)}>Block</button>
+              ):(
+                <button className='userblock' onClick={()=>changeUserStatus(user)}>UnBlock</button>
+              )}
+            </div>
+          </td>
+          </tr>
+        ))}
+        
+      </tbody>
+    </Table>
+    </div>
     </Layout>
+    
   );
 }
 
